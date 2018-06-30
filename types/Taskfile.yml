@@ -1,0 +1,12 @@
+# github.com/go-task/task
+
+version: '2'
+
+vars:
+  GREETING: Hello, World!
+
+tasks:
+  default:
+    cmds:
+      - go run main.go
+    silent: true

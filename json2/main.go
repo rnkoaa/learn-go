@@ -22,8 +22,6 @@ func (t Tentacle) toString() string {
 }
 
 func getTentacles() []Tentacle {
-	// tentacles := make([]Tentacle, 3)
-	// raw, err := ioutil.ReadFile("./tentacles.json")
 	rawString := `[{"name":"Purple Tentacle","description":"A mutant monster and lab assistant created by mad scientist Dr. Fred Edison."},{"name":"Green Tentacle","description":"Harmless and friendly brother of Purple Tentacle."},{"name":"Bernard Bernoulli","description":"Green Tentacle's friend, he's a nerd with glasses."}]`
 	var tentacles []Tentacle
 	json.Unmarshal([]byte(rawString), &tentacles)
