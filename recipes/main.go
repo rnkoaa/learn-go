@@ -6,6 +6,30 @@ import (
 	"os"
 )
 
+type Id struct {
+	Oid string `json:"$oid"`
+}
+
+type Timestamp struct {
+	Date string `json:"$date"`
+}
+
+// Recipe - json object
+type Recipe struct {
+	RecipeID      Id `json:"_id,omitempty"`
+	Name          string
+	Ingredients   string
+	URL           string `json:"url"`
+	Image         string
+	CookTime      string
+	Source        string
+	RecipeYied    int64
+	DatePublished int64
+	PrepTime      int64
+	Description   int64
+	Created       Timestamp `json:"ts"`
+}
+
 func readRecipesFile() (string, error) {
 	file, err := os.Open("data/recipeitems-latest.json")
 	if err != nil {
