@@ -1,0 +1,18 @@
+# github.com/go-task/task
+
+version: '2'
+
+vars:
+  GREETING: Hello, World!
+
+tasks:
+  default:
+    deps: [stringutil]
+    cmds:
+      - go run main.go
+    silent: true
+  
+  stringutil:
+    dir: ../stringutil
+    cmds:
+      - go build && go install learn-go/libraries/stringutil
