@@ -41,6 +41,13 @@ type Recipe struct {
 	Created       Timestamp `json:"ts"`
 }
 
+// ToString -
+func (rp Recipe) ToString() string {
+	result := ""
+	result += "[Name: " + rp.Name + "]"
+	return result
+}
+
 // NewRecipe -
 func NewRecipe() Recipe {
 	return Recipe{}
