@@ -85,7 +85,7 @@ func readLines() (string, error) {
 	return "", nil
 }
 
-func readRecipeFile(ch chan Recipe, doneCh chan struct{}, wg *sync.WaitGroup) {
+func readRecipeFile(ch chan<- Recipe, doneCh chan<- struct{}, wg *sync.WaitGroup) {
 	file, err := os.Open("data/recipeitems-latest.json")
 	if err != nil {
 		// return "", err
