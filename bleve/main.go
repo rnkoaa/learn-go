@@ -109,6 +109,7 @@ func dbDestroy() {
 }
 
 func main() {
+	idxDestroy()
 	idx, err := idxCreate()
 	if err != nil {
 		fmt.Println("Failed to open bleve Index")
@@ -129,7 +130,7 @@ func main() {
 
 	indexEvents(idx, eventList)
 	// We are looking to an Event with some string which match with dotGo
-	query := bleve.NewMatchQuery("dot")
+	query := bleve.NewMatchQuery("GopherCon")
 	searchRequest := bleve.NewSearchRequest(query)
 	searchResult, err := idx.Search(searchRequest)
 	if err != nil {
@@ -141,9 +142,10 @@ func main() {
 	for i := 0; i < len(searchResult.Hits); i++ {
 		hit := searchResult.Hits[i]
 
-		fmt.Printf("Hit InternalId: %v, Hit Id: %v %v\n", hit.IndexInternalID[0],
-			hit.ID,
-			hit.Fields)
+		// fmt.Printf("Hit InternalId: %v, Hit Id: %v %v\n", hit.IndexInternalID[0],
+		// 	hit.ID,
+		// 	hit.Fields)
+		fmt.Println(hit)
 	}
 	fmt.Println("Done")
 }
