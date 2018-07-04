@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
-	// "learn-go/recipes/domain"
 	"os"
 	"sync"
 )
@@ -88,7 +87,6 @@ func readLines() (string, error) {
 func readRecipeFile(ch chan<- Recipe, doneCh chan<- struct{}, wg *sync.WaitGroup) {
 	file, err := os.Open("data/recipeitems-latest.json")
 	if err != nil {
-		// return "", err
 		fmt.Println("An error occurred opening file, ", err)
 	}
 	defer file.Close()
@@ -100,12 +98,9 @@ func readRecipeFile(ch chan<- Recipe, doneCh chan<- struct{}, wg *sync.WaitGroup
 		ch <- FromJSON(scanner.Text())
 		linesCount++
 	}
-	fmt.Printf("Total Lines: %v\n", linesCount)
 	doneCh <- struct{}{}
 	wg.Done()
 }
-
-var concurrency = 1
 
 var wg = sync.WaitGroup{}
 
@@ -115,16 +110,15 @@ func main() {
 	var recipeCh = make(chan Recipe, 50)
 	var doneCh = make(chan struct{})
 
+	// spawn a goroutine to read all files and convert to recipe structs.
 	go readRecipeFile(recipeCh, doneCh, &wg)
 
+	// spawn another go routine to read the channel and persist this object into
+	// a database, postgres
 	go func(ch <-chan Recipe) {
 		for {
 			select {
 			case entry := <-recipeCh:
-				// fmt.Printf("%v - [%v] %v\n", entry.time.Format("2006-01-02T15:04:05"),
-				// 	entry.severity,
-				// 	entry.message)
-				// fmt.Printf("%s -> %s\n", entry.RecipeID, entry.Name)
 				fmt.Println(entry.Name)
 				break
 			case <-doneCh:
