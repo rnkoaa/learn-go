@@ -14,16 +14,20 @@ import (
 
 var wg = sync.WaitGroup{}
 
-func Load() {
+func OpenDB() (*gorm.DB, error) {
 	db, err := gorm.Open("sqlite3", "/tmp/recipes.db")
 	if err != nil {
 		log.Printf("Error opening file")
 	}
-	defer db.Close()
-
 	db.DB().SetMaxIdleConns(10)
 	db.DB().SetMaxOpenConns(100)
 
+	return db, err
+}
+
+func Load() {
+	db, _ := OpenDB()
+	defer db.Close()
 	recipeRepository := repo.NewSqliteRecipeRepository(db)
 	recipeRepository.CreateTableIFNotExists()
 
