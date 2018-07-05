@@ -14,6 +14,7 @@ import (
 func main() {
 	defer timeTrack(time.Now(), "Main")
 
+	defer SetupCloseHandler()
 	// count, _ := LineCount("data/recipeitems-latest.json")
 	// fmt.Println(count)
 	db, _ := OpenDB()
@@ -33,6 +34,14 @@ func main() {
 		}
 	}
 	fmt.Println("Length: ", len(recipeDtos))
+
+	recipeDtos, _ = recipeService.FindAllRecipes()
+	fmt.Println("-------------------------------------")
+	if len(recipeDtos) > 0 {
+		for idx, dto := range recipeDtos {
+			fmt.Printf("%d -> %s, %s\n", idx, dto.ID, dto.Name)
+		}
+	}
 }
 
 // SetupCloseHandler creates a 'listener' on a new goroutine which will notify the

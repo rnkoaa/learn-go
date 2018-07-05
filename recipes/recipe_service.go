@@ -15,7 +15,7 @@ type SqliteRecipeService struct {
 // RecipeService -
 type RecipeService interface {
 	FindRecipe(id string) (*domain.RecipeDTO, error)
-	FindAllRecipes() ([]*domain.RecipeDTO, error)
+	FindAllRecipes() ([]domain.RecipeDTO, error)
 	FindAllByRecipeName(name string) ([]domain.RecipeDTO, error)
 	Count() (int64, error)
 }
@@ -34,8 +34,8 @@ func (impl *SqliteRecipeService) FindRecipe(id string) (*domain.RecipeDTO, error
 }
 
 // FindAllRecipes -
-func (impl *SqliteRecipeService) FindAllRecipes() ([]*domain.RecipeDTO, error) {
-	recipeDtos := make([]*domain.RecipeDTO, 0)
+func (impl *SqliteRecipeService) FindAllRecipes() ([]domain.RecipeDTO, error) {
+	recipeDtos, _ := impl.repository.FindAll()
 	return recipeDtos, nil
 }
 

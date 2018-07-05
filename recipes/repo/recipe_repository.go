@@ -27,7 +27,7 @@ const (
 type RecipeRepository interface {
 	CreateTableIFNotExists() error
 	Find(id string) (*domain.RecipeDTO, error)
-	FindAll() ([]*domain.RecipeDTO, error)
+	FindAll() ([]domain.RecipeDTO, error)
 	Save(receiptDto *domain.RecipeDTO) (*domain.RecipeDTO, error)
 	FindByName(name string) ([]domain.RecipeDTO, error)
 	SaveAll(receiptDtos []domain.RecipeDTO) error
@@ -123,8 +123,8 @@ func (template *DbTemplate) CreateTableIFNotExists() error {
 }
 
 // FindAll -
-func (template *DbTemplate) FindAll() ([]*domain.RecipeDTO, error) {
-	results := make([]*domain.RecipeDTO, 0)
+func (template *DbTemplate) FindAll() ([]domain.RecipeDTO, error) {
+	results := []domain.RecipeDTO{}
 	err := template.db.Find(&results)
 	if err != nil {
 		fmt.Printf("Error when looking up Table, the error is '%v'", err)
