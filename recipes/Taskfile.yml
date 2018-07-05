@@ -1,0 +1,31 @@
+# github.com/go-task/task
+
+version: '2'
+
+tasks:
+  default:
+    deps: ["repo-compile"]
+    cmds:
+      - go run main.go
+    silent: true
+
+  clean:
+    cmds:
+      - go clean
+
+  build:
+    deps: ["repo-compile"]
+    cmds:
+      - go build *.go
+    silent: true
+    
+  domain-compile:
+    dir: domain
+    cmds:
+      - go build && go install learn-go/recipes/domain
+
+  repo-compile:
+    deps: [domain-compile]
+    dir: repo
+    cmds:
+      - go build && go install learn-go/recipes/repo

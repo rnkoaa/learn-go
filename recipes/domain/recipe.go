@@ -34,9 +34,10 @@ type Recipe struct {
 	Image         string
 	CookTime      string
 	Source        string
-	RecipeYied    string
+	RecipeYield   string `json:"recipeYield"`
 	DatePublished string
 	PrepTime      string
+	TotalTime     string `json:"totalTime"`
 	Description   string
 	Created       Timestamp `json:"ts"`
 }
