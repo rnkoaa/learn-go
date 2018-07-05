@@ -6,7 +6,7 @@ tasks:
   default:
     deps: ["repo-compile"]
     cmds:
-      - go run main.go data_loader.go
+      - go run *.go
     silent: true
 
   clean:

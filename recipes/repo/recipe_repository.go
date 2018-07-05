@@ -29,8 +29,9 @@ type RecipeRepository interface {
 	Find(id string) (*domain.RecipeDTO, error)
 	FindAll() ([]*domain.RecipeDTO, error)
 	Save(receiptDto *domain.RecipeDTO) (*domain.RecipeDTO, error)
-	FindByName(name string) ([]*domain.RecipeDTO, error)
+	FindByName(name string) ([]domain.RecipeDTO, error)
 	SaveAll(receiptDtos []domain.RecipeDTO) error
+	Count() (int64, error)
 }
 
 // NewSqliteRecipeRepository -
@@ -43,11 +44,13 @@ func NewSqliteRecipeRepository(dbConn *gorm.DB) RecipeRepository {
 // Find -
 func (template *DbTemplate) Find(id string) (*domain.RecipeDTO, error) {
 	receiptDto := domain.NewRecipeDTO()
-	template.db.First(receiptDto, id)
+	log.Println("Looking for item with id:", id)
+	template.db.Where("id = ?", id).First(&receiptDto)
 	return receiptDto, nil
 }
 
-// Find -
+// SaveAll - Saves RecipeDTO's in bulk in Transactions. This is very fast
+// due to the fact that it uses prepared statements
 func (template *DbTemplate) SaveAll(receiptDtos []domain.RecipeDTO) error {
 	db := template.db.DB()
 
@@ -141,12 +144,20 @@ func (template *DbTemplate) Save(recipeDTO *domain.RecipeDTO) (*domain.RecipeDTO
 }
 
 // FindByName -
-func (template *DbTemplate) FindByName(name string) ([]*domain.RecipeDTO, error) {
-	results := make([]*domain.RecipeDTO, 0)
-	err := template.db.Where("name = ?", name).Find(&results)
-	if err != nil {
-		// log.Debugf("Error when looking up Table, the error is '%v'", err)
-		fmt.Printf("Error when looking up Table, the error is '%v'", err)
-	}
+func (template *DbTemplate) FindByName(name string) ([]domain.RecipeDTO, error) {
+	results := []domain.RecipeDTO{}
+	template.db.Where("name = ?", name).Find(&results)
+	// if err != nil {
+	// 	// log.Debugf("Error when looking up Table, the error is '%v'", err)
+	// 	fmt.Printf("Finding recipes by name, the error is '%v'", err.)
+	// }
 	return results, nil
+}
+
+// Count -
+func (template *DbTemplate) Count() (int64, error) {
+	var count = 0
+	tableName := domain.NewRecipeDTO().TableName()
+	template.db.Table(tableName).Count(&count)
+	return int64(count), nil
 }

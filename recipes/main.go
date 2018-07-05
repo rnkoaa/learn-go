@@ -14,8 +14,25 @@ import (
 func main() {
 	defer timeTrack(time.Now(), "Main")
 
-	count, _ := LineCount("data/recipeitems-latest.json")
-	fmt.Println(count)
+	// count, _ := LineCount("data/recipeitems-latest.json")
+	// fmt.Println(count)
+	db, _ := OpenDB()
+	defer db.Close()
+	var recipeService = NewSqliteRecipeService(db)
+
+	count, _ := recipeService.Count()
+	fmt.Printf("Total Items in Table: %d\n", count)
+
+	recipeDto, _ := recipeService.FindRecipe("5160756b96cc62079cc2db15")
+	fmt.Println(recipeDto.Name)
+
+	recipeDtos, _ := recipeService.FindAllByRecipeName("Drop Biscuits and Sausage Gravy")
+	if len(recipeDtos) > 0 {
+		for idx, dto := range recipeDtos {
+			fmt.Printf("%d -> %s, %s\n", idx, dto.ID, dto.Name)
+		}
+	}
+	fmt.Println("Length: ", len(recipeDtos))
 }
 
 // SetupCloseHandler creates a 'listener' on a new goroutine which will notify the
