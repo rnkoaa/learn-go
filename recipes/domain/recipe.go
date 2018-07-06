@@ -37,6 +37,7 @@ type Recipe struct {
 	RecipeYield   string `json:"recipeYield"`
 	DatePublished string
 	PrepTime      string
+	Category      string `json:"recipeCategory,omitempty"`
 	TotalTime     string `json:"totalTime"`
 	Description   string
 	Created       Timestamp `json:"ts"`
