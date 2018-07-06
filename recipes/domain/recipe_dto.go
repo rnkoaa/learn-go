@@ -63,7 +63,12 @@ func (RecipeDTO) TableName() string {
 	return "recipe"
 }
 
-// NewRecipeDTO
+// Type refers to the document type in bleve
+func (recipeDTO *RecipeDTO) Type() string {
+	return "recipe"
+}
+
+// NewRecipeDTO -
 func NewRecipeDTO() *RecipeDTO {
 	return &RecipeDTO{}
 }

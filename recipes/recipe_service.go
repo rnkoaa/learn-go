@@ -17,6 +17,7 @@ type RecipeService interface {
 	FindRecipe(id string) (*domain.RecipeDTO, error)
 	FindAllRecipes() ([]domain.RecipeDTO, error)
 	FindAllByRecipeName(name string) ([]domain.RecipeDTO, error)
+	FindAllByLimitAndOffset(limit int, offset int) ([]domain.RecipeDTO, error)
 	Count() (int64, error)
 }
 
@@ -45,7 +46,14 @@ func (impl *SqliteRecipeService) FindAllByRecipeName(name string) ([]domain.Reci
 	return recipeDtos, err
 }
 
-// FindAllByRecipeName -
+// FindAllByLimitAndOffset -
+func (impl *SqliteRecipeService) FindAllByLimitAndOffset(limit int, offset int) ([]domain.RecipeDTO, error) {
+	// correctOffset := offset * limit
+	recipeDtos, err := impl.repository.FindAllByLimitAndOffset(limit, offset)
+	return recipeDtos, err
+}
+
+// Count -
 func (impl *SqliteRecipeService) Count() (int64, error) {
 	count, err := impl.repository.Count()
 	return count, err

@@ -30,6 +30,7 @@ type RecipeRepository interface {
 	FindAll() ([]domain.RecipeDTO, error)
 	Save(receiptDto *domain.RecipeDTO) (*domain.RecipeDTO, error)
 	FindByName(name string) ([]domain.RecipeDTO, error)
+	FindAllByLimitAndOffset(limit int, offset int) ([]domain.RecipeDTO, error)
 	SaveAll(receiptDtos []domain.RecipeDTO) error
 	Count() (int64, error)
 }
@@ -151,6 +152,14 @@ func (template *DbTemplate) FindByName(name string) ([]domain.RecipeDTO, error) 
 	// 	// log.Debugf("Error when looking up Table, the error is '%v'", err)
 	// 	fmt.Printf("Finding recipes by name, the error is '%v'", err.)
 	// }
+	return results, nil
+}
+
+// FindAllByLimitAndOffset -
+func (template *DbTemplate) FindAllByLimitAndOffset(limit int, offset int) ([]domain.RecipeDTO, error) {
+	results := []domain.RecipeDTO{}
+	currentOffset := limit * offset
+	template.db.Limit(limit).Offset(currentOffset).Find(&results)
 	return results, nil
 }
 

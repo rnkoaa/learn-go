@@ -4,7 +4,7 @@ version: '2'
 
 tasks:
   default:
-    deps: ["repo-compile"]
+    deps: ["repo-compile", "search-compile"]
     cmds:
       - go run *.go
     silent: true
@@ -29,3 +29,8 @@ tasks:
     dir: repo
     cmds:
       - go build && go install learn-go/recipes/repo
+  search-compile:
+    deps: [domain-compile]
+    dir: search
+    cmds:
+      - go build && go install learn-go/recipes/search
